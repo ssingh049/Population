@@ -2,7 +2,12 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 /**
- *	Population - <description goes here>
+ *	Population.java uses Bubble, Selection, Insertion, and Merge sort 
+ *  to sort US cities by population, name, and populations within a certain
+ *  city or state. The user can select one of 6 options: sorting cities
+ *  by ascending or descending population, ascending or descending name, 
+ *  cities with the same name by population, and cities in a particular 
+ *  state by population. 
  *
  *	Requires FileUtils and Prompt classes.
  *
@@ -13,124 +18,154 @@ public class Population {
 	
 	// List of cities
 	private List<City> cities;
+	// measures time taken for each sort
 	private long time;
 	// US data file
 	private final String DATA_FILE = "usPopData2017.txt";
 	
+	// constructor
 	public Population()
 	{
 		time = 0;
 		cities = new ArrayList<City>();
 	}
 	
+	// calls run method
 	public static void main(String[] args)
 	{
 		Population p = new Population();
 		p.run();
 	}
 	
+	/**	
+	 *  Description:
+	 *  Calls methods to set up program (printIntroduction(), openFile() to 
+	 *  load city contents), then asks for user input and calls methods
+	 *  for sorting cities accordingly.
+	 */
 	public void run()
 	{
 		Prompt p = new Prompt();
 		printIntroduction();
 		printMenu();
 		openFile();
-		// add time & other things
 		int selection = 0;
-		do
+		boolean quit = false;
+		while(quit==false)
 		{
-			selection = p.getInt("Enter Selection");
-			System.out.println(String.format("\n%-25s %-22s %-15s %s", "State", "City", "City Type", "Population"));
-			if(selection==1)
+			do
 			{
-				populationAscending();
-				for(int i = 0; i < 50; i++)
-					if(i<9)
-						System.out.println(i+1 + ": " + cities.get(i));
-					else
-						System.out.println(i+1 + ":" + cities.get(i));
-					
-				System.out.println("\n\nElapsed time " + time + " milliseconds\n\n");
-			}
-			else if(selection==2)
-			{
-				populationDescending();
-				for(int i = 0; i < 50; i++)
-					if(i<9)
-						System.out.println(i+1 + ": " + cities.get(i));
-					else
-						System.out.println(i+1 + ":" + cities.get(i));
-					
-				System.out.println("\n\nElapsed time " + time + " milliseconds\n\n");
-			}
-			else if(selection==3)
-			{
-				nameAscending();
-				for(int i = 0; i < 50; i++)
-					if(i<9)
-						System.out.println(i+1 + ": " + cities.get(i));
-					else
-						System.out.println(i+1 + ":" + cities.get(i));
-					
-				System.out.println("\n\nElapsed time " + time + " milliseconds\n\n");
-			}
-			else if(selection==4)
-			{
-				nameDescending();
-				for(int i = 0; i < 50; i++)
-					if(i<9)
-						System.out.println(i+1 + ": " + cities.get(i));
-					else
-						System.out.println(i+1 + ":" + cities.get(i));
-					
-				System.out.println("\n\nElapsed time " + time + " milliseconds\n\n");
-			}
-			else if(selection==6)
-			{
-				boolean valid = false;
-				String enteredName = "";
-				// ask for city name
-				do
+				selection = p.getInt("Enter Selection");
+				if(selection==1)
 				{
-					enteredName = p.getString("Please enter city name ");
-					for(City c : cities)
-					{
-						if(c.getCityName().equals(enteredName))
-							valid = true;
-					}
-				
-				} while(!valid);
-				chosenCity(enteredName);
-				
-				System.out.println("\n\nElapsed time " + time + " milliseconds\n\n");
-			}
-			else if(selection==5)
-			{
-				boolean valid = false;
-				String enteredName = "";
-				// ask for city name
-				do
+					System.out.println(String.format("\n%-25s %-22s %-15s"+
+					" %s", "State", "City", "City Type", "Population"));
+					populationAscending();
+					for(int i = 0; i < 50; i++)
+						if(i<9)
+							System.out.println(i+1 + ": " + cities.get(i));
+						else
+							System.out.println(i+1 + ":" + cities.get(i));
+						
+					System.out.println("\n\nElapsed time " + time + " milliseconds\n\n");
+				}
+				else if(selection==2)
 				{
-					enteredName = p.getString("Please enter state name ");
-					for(City c : cities)
+					System.out.println(String.format("\n%-25s %-22s %-15s %s",
+					 "State", "City", "City Type", "Population"));
+					populationDescending();
+					for(int i = 0; i < 50; i++)
+						if(i<9)
+							System.out.println(i+1 + ": " + cities.get(i));
+						else
+							System.out.println(i+1 + ":" + cities.get(i));
+						
+					System.out.println("\n\nElapsed time " + time +
+					 " milliseconds\n\n");
+				}
+				else if(selection==3)
+				{
+					System.out.println(String.format("\n%-25s %-22s %-15s %s", 
+					"State", "City", "City Type", "Population"));
+					nameAscending();
+					for(int i = 0; i < 50; i++)
+						if(i<9)
+							System.out.println(i+1 + ": " + cities.get(i));
+						else
+							System.out.println(i+1 + ":" + cities.get(i));
+						
+					System.out.println("\n\nElapsed time " + time + 
+					" milliseconds\n\n");
+				}
+				else if(selection==4)
+				{
+					System.out.println(String.format("\n%-25s %-22s %-15s %s",
+					 "State", "City", "City Type", "Population"));
+					nameDescending();
+					for(int i = 0; i < 50; i++)
+						if(i<9)
+							System.out.println(i+1 + ": " + cities.get(i));
+						else
+							System.out.println(i+1 + ":" + cities.get(i));
+						
+					System.out.println("\n\nElapsed time " + time + 
+					" milliseconds\n\n");
+				}
+				else if(selection==6)
+				{
+					boolean valid = false;
+					String enteredName = "";
+					// ask for city name
+					do
 					{
-						if(c.getStateName().equals(enteredName))
-							valid = true;
-					}
-				
-				} while(!valid);
-				chosenState(enteredName);
+						enteredName = p.getString("Please enter city name ");
+						for(City c : cities)
+						{
+							if(c.getCityName().equals(enteredName))
+								valid = true;
+						}
+					
+					} while(!valid);
+					System.out.println(String.format("\n%-25s %-22s %-15s %s",
+					 "State", "City", "City Type", "Population"));
+					chosenCity(enteredName);
+				}
+				else if(selection==5)
+				{
+					boolean valid = false;
+					String enteredName = "";
+					// ask for city name
+					do
+					{
+						enteredName = p.getString("Please enter state name ");
+						for(City c : cities)
+						{
+							if(c.getStateName().equals(enteredName))
+								valid = true;
+						}
+					
+					} while(!valid);
+					System.out.println(String.format("\n%-25s %-22s %-15s %s",
+					 "State", "City", "City Type", "Population"));
+					chosenState(enteredName);
+				}
+				else if(selection==9)
+				{
+					System.out.println("Thanks for using Population!");
+					quit = true;
+					System.exit(1);
+				}
+			
 			}
-			else if(selection==9)
-			{
-				System.out.println("Thanks for using Population!");
-				System.exit(1);
-			}
-		
+			while(selection<1 || (selection>6 && selection<9) || selection>9);
 		}
-		while(selection<1 || (selection>6 && selection<9) || selection>9);
 	}
 	
+	/**	
+	 *  Description:
+	 *  Runs through each line in data file and saves contents to add
+	 *  new City object to ArrayList cities. 
+	 */
 	public void openFile()
 	{
 		String stateName = "";
@@ -149,6 +184,12 @@ public class Population {
 		}
 	}
 	
+	/**	
+	 *  Description:
+	 *  Uses selection sort method (copied from SortMethods.java) to 
+	 *  sort populations in ascending order (for 2nd option in menu).
+	 *  Records time before and after, sets time FV accordingly. 
+	 */
 	public void populationAscending()
 	{
 		long startMillisec = System.currentTimeMillis();
@@ -169,6 +210,12 @@ public class Population {
 		time = endMillisec - startMillisec;
 	}
 	
+	/**	
+	 *  Description:
+	 *  Uses merge sort method (copied from SortMethods.java) to 
+	 *  sort populations in descending order (for 3rd option in menu).
+	 *  Records time before and after, sets time FV accordingly. 
+	 */
 	public void populationDescending()
 	{
 		long startMillisec = System.currentTimeMillis();
@@ -179,6 +226,7 @@ public class Population {
 		time = endMillisec - startMillisec;
 	}
 	
+	// merge sort method for populationDescending()
 	public List<City> mergeSort(List<City> arr, int n)
 	{
 		n = arr.size();
@@ -204,6 +252,7 @@ public class Population {
 		
 	}
 	
+	// merge method for merge sort method (for populationDescending())
 	public void merge1(List<City> arr, List<City> l, List<City> r, int left, int right) 
 	{
 		int i = 0, j = 0, k = 0;
@@ -228,6 +277,12 @@ public class Population {
 		}
 	}
 	
+	/**	
+	 *  Description:
+	 *  Uses insertion sort method (copied from SortMethods.java) to 
+	 *  sort names in ascending order (for 4rd option in menu).
+	 *  Records time before and after, sets time FV accordingly. 
+	 */
 	public void nameAscending()
 	{
 		long startMillisec = System.currentTimeMillis();
@@ -250,6 +305,12 @@ public class Population {
 		
 	}
 	
+	/**	
+	 *  Description:
+	 *  Uses merge sort method (copied from SortMethods.java) to 
+	 *  sort names in descending order (for 4rd option in menu).
+	 *  Records time before and after, sets time FV accordingly. 
+	 */
 	public void nameDescending()
 	{
 		long startMillisec = System.currentTimeMillis();
@@ -260,6 +321,7 @@ public class Population {
 		time = endMillisec - startMillisec;
 	}
 	
+	// merge sort method for nameDescending()
 	public List<City> mergeSort2(List<City> arr, int n)
 	{
 		n = arr.size();
@@ -285,6 +347,7 @@ public class Population {
 		
 	}
 	
+	// merge method for merge sort method (for nameDescending())
 	public void merge2(List<City> arr, List<City> l, List<City> r, int left, int right) 
 	{
 		int i = 0, j = 0, k = 0;
@@ -309,6 +372,14 @@ public class Population {
 		}
 	}
 	
+	/**	
+	 *  Description:
+	 *  Copies all cities from data file matching with state name entered 
+	 *  by user into a new ArrayList. Uses merge sort method (copied 
+	 *  from SortMethods.java) to sort populations in state in ascending order 
+	 *  (for 5th option in menu). Records time before and after, sets 
+	 *  time FV accordingly. Prints results. 
+	 */
 	public void chosenState(String enteredName)
 	{
 		long startMillisec = System.currentTimeMillis();
@@ -324,11 +395,22 @@ public class Population {
 		long endMillisec = System.currentTimeMillis();
 		time = endMillisec - startMillisec;
 		
-		for(int i = 0; i < citiesInState.size(); i++)
+		if(citiesInState.size()>50)
+		{
+			for(int i = 0; i < 50; i++)
+				if(i<9)
+							System.out.println(i+1 + ": " + citiesInState.get(i));
+						else
+							System.out.println(i+1 + ":" + citiesInState.get(i));
+		}
+		else 
+		{
+			for(int i = 0; i < citiesInState.size(); i++)
 			if(i<9)
 						System.out.println(i+1 + ": " + citiesInState.get(i));
 					else
 						System.out.println(i+1 + ":" + citiesInState.get(i));
+		}
 		
 		System.out.println("\n\nElapsed time " + time + " milliseconds\n\n");
 		// loop through cities
@@ -337,6 +419,14 @@ public class Population {
 		// print first 50 (or less)
 	}
 	
+	/**	
+	 *  Description:
+	 *  Copies all cities from data file matching with city name entered 
+	 *  by user into a new ArrayList. Uses merge sort method (copied 
+	 *  from SortMethods.java) to sort populations of cities in ascending order 
+	 *  (for 6th option in menu). Records time before and after, sets 
+	 *  time FV accordingly. Prints results. 
+	 */
 	public void chosenCity(String enteredName)
 	{
 		long startMillisec = System.currentTimeMillis();
@@ -386,7 +476,6 @@ public class Population {
 		System.out.println("6. All cities matching a name sorted by population");
 		System.out.println("9. Quit");
 	}
-	
 	
 	
 }
